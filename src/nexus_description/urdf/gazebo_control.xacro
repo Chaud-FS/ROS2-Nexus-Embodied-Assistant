@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!--
+  Gazebo + ros2_control integration for the Nexus arm.
+  - Defines the <ros2_control> system exposing all joints.
+  - Attaches an RGB-D camera to the gripper for perception.
+  - Loads the gazebo_ros2_control plugin to bridge commands into Gazebo.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="nexus_arm">
+
+  <!-- ===================== ros2_control ===================== -->
+  <ros2_control name="nexus_arm_controller" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+
+    <joint name="joint1">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint2">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint3">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint4">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint5">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint6">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <command_interface name="effort"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="left_finger_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="right_finger_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- ===================== Gazebo plugins ===================== -->
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="ros2_control">
+      <robot_param>robot_description</robot_param>
+      <robot_namespace>/nexus</robot_namespace>
+      <parameters>$(find nexus_description)/config/nexus_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+  <!-- ===================== Gripper-mounted camera ===================== -->
+  <gazebo reference="gripper_base">
+    <sensor name="nexus_camera" type="camera">
+      <pose>0 0 0.06 0 0 0</pose>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>10.0</far>
+        </clip>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>15</update_rate>
+      <visualize>true</visualize>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_controller">
+        <ros>
+          <namespace>/nexus/camera</namespace>
+          <argument>image_raw:=rgb/image_raw</argument>
+          <argument>camera_info:=rgb/camera_info</argument>
+        </ros>
+        <camera_name>nexus_camera</camera_name>
+        <frame_name>camera_link</frame_name>
+        <hack_baseline>0.07</hack_baseline>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- optical frame convention: z forward, x right, y down -->
+  <link name="camera_link"/>
+  <joint name="camera_link_joint" type="fixed">
+    <parent link="gripper_base"/>
+    <child link="camera_link"/>
+    <origin xyz="0 0 0.06" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+</robot>

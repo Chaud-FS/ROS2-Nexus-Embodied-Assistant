@@ -1,0 +1,12 @@
+llm_brain_node:
+  ros__parameters:
+    api_key: ""            # falls back to $DASHSCOPE_API_KEY / $OPENAI_API_KEY
+    model: "qwen-plus"
+    base_url: ""           # empty -> DashScope; or an OpenAI-compatible URL
+    voice_topic: "/nexus/voice/text"
+    perception_topic: "/nexus/perception/result"
+    arm_state_topic: "/nexus/joint_states"
+    plan_topic: "/nexus/brain/plan"
+    feedback_topic: "/nexus/brain/feedback"
+    exec_result_topic: "/nexus/execution/result"
+    plan_service: "/nexus/brain/plan"

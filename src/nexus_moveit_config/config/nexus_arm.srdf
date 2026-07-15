@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<!-- SRDF for the Nexus 6-DOF arm. Generated manually for MoveIt2. -->
+<robot name="nexus_arm">
+  <!-- Groups -->
+  <group name="arm">
+    <chain base_link="base_link" tip_link="link6"/>
+  </group>
+
+  <group name="gripper">
+    <joint name="left_finger_joint"/>
+    <joint name="right_finger_joint"/>
+  </group>
+
+  <!-- End effector -->
+  <end_effector name="tool0_eef" parent_link="gripper_base" group="gripper" parent_group="arm"/>
+
+  <!-- Robot poses -->
+  <group_state name="home" group="arm">
+    <joint name="joint1" value="0"/>
+    <joint name="joint2" value="0"/>
+    <joint name="joint3" value="0"/>
+    <joint name="joint4" value="0"/>
+    <joint name="joint5" value="0"/>
+    <joint name="joint6" value="0"/>
+  </group_state>
+
+  <group_state name="ready" group="arm">
+    <joint name="joint1" value="0"/>
+    <joint name="joint2" value="-0.3"/>
+    <joint name="joint3" value="0.6"/>
+    <joint name="joint4" value="-0.3"/>
+    <joint name="joint5" value="0"/>
+    <joint name="joint6" value="0"/>
+  </group_state>
+
+  <!-- Collision ignore (self) -->
+  <disable_collisions link1="base_link" link2="link1" reason="Adjacent"/>
+  <disable_collisions link1="link1" link2="link2" reason="Adjacent"/>
+  <disable_collisions link1="link2" link3="link3" reason="Adjacent"/>
+  <disable_collisions link1="link3" link4="link4" reason="Adjacent"/>
+  <disable_collisions link1="link4" link5="link5" reason="Adjacent"/>
+  <disable_collisions link1="link5" link6="link6" reason="Adjacent"/>
+  <disable_collisions link1="link6" link2="gripper_base" reason="Adjacent"/>
+  <disable_collisions link1="gripper_base" link2="left_finger" reason="Adjacent"/>
+  <disable_collisions link1="gripper_base" link2="right_finger" reason="Adjacent"/>
+</robot>

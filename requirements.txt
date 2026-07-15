@@ -1,0 +1,14 @@
+# Python dependencies for the Nexus Embodied Assistant.
+# Core (required by the nodes):
+requests>=2.28.0      # HTTP client for Qwen-VL / LLM APIs
+Pillow>=9.0.0         # Image encoding for the vision pipeline
+numpy>=1.23.0          # array handling for perception
+
+# Optional providers (only needed for the corresponding modes):
+# openai>=1.0.0        # OpenAI-compatible VL / Whisper / TTS backends
+# SpeechRecognition>=3.10.0  # microphone STT (google / whisper)
+# pyttsx3>=2.90         # offline TTS
+# sounddevice>=0.4.6     # audio playback for openai TTS
+
+# Note: rclpy and ROS message packages are provided by the ROS2 install,
+# not by pip. Install them via apt (ros-humble-*) as described in docs/.

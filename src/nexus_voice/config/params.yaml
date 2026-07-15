@@ -1,0 +1,15 @@
+stt_node:
+  ros__parameters:
+    provider: "mock"          # mock | google | whisper
+    language: "en-US"
+    openai_api_key: ""        # falls back to $OPENAI_API_KEY
+    text_topic: "/nexus/voice/text"
+    input_topic: "/nexus/voice/text_input"
+    listen_service: "/nexus/voice/listen"
+
+tts_node:
+  ros__parameters:
+    provider: "mock"          # mock | pyttsx3 | openai
+    voice: "alloy"
+    openai_api_key: ""        # falls back to $OPENAI_API_KEY
+    feedback_topic: "/nexus/brain/feedback"

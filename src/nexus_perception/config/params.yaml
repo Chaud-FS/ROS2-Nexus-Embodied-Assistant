@@ -1,0 +1,11 @@
+qwen_vl_node:
+  ros__parameters:
+    api_key: ""          # falls back to $DASHSCOPE_API_KEY / $OPENAI_API_KEY
+    model: "qwen-vl-max"
+    base_url: ""         # empty -> DashScope; or set to an OpenAI-compatible URL
+    image_topic: "/nexus/camera/rgb/image_raw"
+    camera_info_topic: "/nexus/camera/rgb/camera_info"
+    result_topic: "/nexus/perception/result"
+    trigger_service: "/nexus/perception/trigger"
+    nominal_depth: 0.55
+    timer_period: 0.0    # 0 = triggered only; >0 = continuous analysis in seconds

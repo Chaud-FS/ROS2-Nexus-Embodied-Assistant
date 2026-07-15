@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+*.xacro   text
+*.urdf    text
+*.srdf    text
+*.yaml    text
+*.yml     text
+*.sdf     text
+*.world   text
+*.launch.py text
+*.py      text
+*.xml     text
+*.md      text

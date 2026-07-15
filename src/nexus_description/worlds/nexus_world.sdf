@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <world name="nexus_world">
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Physics -->
+    <physics type="ode" name="default_physics">
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <gravity>0 0 -9.81</gravity>
+    </physics>
+
+    <!-- Table where the robot sits -->
+    <model name="table">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="table_top">
+        <pose>0 0 0.4 0 0 0</pose>
+        <visual name="v">
+          <geometry><box><size>1.4 1.0 0.05</size></box></geometry>
+          <material><ambient>0.8 0.8 0.8 1</ambient></material>
+        </visual>
+        <collision name="c">
+          <geometry><box><size>1.4 1.0 0.05</size></box></geometry>
+        </collision>
+      </link>
+      <link name="leg1">
+        <pose>0.6 0.4 0.2 0 0 0</pose>
+        <visual name="v"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></visual>
+        <collision name="c"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></collision>
+      </link>
+      <link name="leg2">
+        <pose>-0.6 0.4 0.2 0 0 0</pose>
+        <visual name="v"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></visual>
+        <collision name="c"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></collision>
+      </link>
+      <link name="leg3">
+        <pose>0.6 -0.4 0.2 0 0 0</pose>
+        <visual name="v"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></visual>
+        <collision name="c"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></collision>
+      </link>
+      <link name="leg4">
+        <pose>-0.6 -0.4 0.2 0 0 0</pose>
+        <visual name="v"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></visual>
+        <collision name="c"><geometry><box><size>0.05 0.05 0.4</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- Red cube to be grasped -->
+    <model name="red_cube">
+      <pose>0.25 0.1 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="v">
+          <geometry><box><size>0.05 0.05 0.05</size></box></geometry>
+          <material><ambient>0.9 0.1 0.1 1</ambient><diffuse>0.9 0.1 0.1 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>0.05 0.05 0.05</size></box></geometry></collision>
+        <inertial>
+          <mass>0.05</mass>
+          <inertia><ixx>0.00001</ixx><ixy>0</ixy><ixz>0</ixz>
+                   <iyy>0.00001</iyy><iyz>0</iyz><izz>0.00001</izz></inertia>
+        </inertial>
+      </link>
+    </model>
+
+    <!-- Blue box (target placement) -->
+    <model name="blue_box">
+      <pose>-0.25 0.1 0.43 0 0 0</pose>
+      <link name="link">
+        <visual name="v">
+          <geometry><box><size>0.1 0.1 0.06</size></box></geometry>
+          <material><ambient>0.1 0.1 0.9 1</ambient><diffuse>0.1 0.1 0.9 1</diffuse></material>
+        </visual>
+        <collision name="c"><geometry><box><size>0.1 0.1 0.06</size></box></geometry></collision>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia><ixx>0.00002</ixx><ixy>0</ixy><ixz>0</ixz>
+                   <iyy>0.00002</iyy><iyz>0</iyz><izz>0.00002</izz></inertia>
+        </inertial>
+      </link>
+    </model>
+
+  </world>
+</sdf>
