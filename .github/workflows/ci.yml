@@ -51,11 +51,22 @@ jobs:
       - name: Test
         run: |
           . /opt/ros/humble/setup.sh
-          # Upgrade pytest: the system pytest (6.x on Ubuntu 22.04) lacks the
-          # _pytest.scope module that the anyio plugin (pulled in by openai)
-          # requires, which crashes `colcon test`'s pytest run.
-          pip3 install -U --break-system-packages 'pytest>=7.4' || \
-          pip3 install -U 'pytest>=7.4'
           . install/setup.sh
-          colcon test --packages-select nexus_brain nexus_perception nexus_orchestrator
-          colcon test-result --verbose
+          # Run pytest directly instead of `colcon test`: ament_python's
+          # package.sh-based test entry is unreliable (not generated for every
+          # python package), and `colcon test` spawns a subprocess that picks
+          # up the system pytest (6.x) which lacks `_pytest.scope` and crashes
+          # the anyio plugin pulled in by openai.
+          #
+          # Belt-and-suspenders:
+          #  - pytest>=7.4 provides the `_pytest.scope` module anyio needs
+          #  - anyio<4 does not touch `_pytest.scope` at all, so even if the
+          #    system pytest is somehow used the run no longer crashes.
+          pip3 install -U --break-system-packages 'pytest>=7.4' 'anyio<4' || \
+          pip3 install -U 'pytest>=7.4' 'anyio<4'
+          python3 -m pytest --version
+          python3 -m pytest \
+            src/nexus_brain/tests \
+            src/nexus_perception/tests \
+            src/nexus_orchestrator/tests \
+            -v
