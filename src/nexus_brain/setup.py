@@ -17,6 +17,7 @@ setup(
     description='LLM decision brain for the Nexus assistant.',
     license='Apache-2.0',
     tests_require=['pytest'],
+    test_suite='tests',
     entry_points={
         'console_scripts': [
             'llm_brain_node = nexus_brain.llm_brain_node:main',

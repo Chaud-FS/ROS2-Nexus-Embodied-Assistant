@@ -17,6 +17,7 @@ setup(
     description='Multimodal orchestration node for the Nexus assistant.',
     license='Apache-2.0',
     tests_require=['pytest'],
+    test_suite='tests',
     entry_points={
         'console_scripts': [
             'orchestrator_node = nexus_orchestrator.orchestrator_node:main',

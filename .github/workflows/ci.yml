@@ -33,8 +33,8 @@ jobs:
 
       - name: Install Python deps
         run: |
-          pip3 install --break-system-packages --no-cache-dir openai pyyaml requests || \
-          pip3 install --no-cache-dir openai pyyaml requests
+          pip3 install --break-system-packages --no-cache-dir openai pyyaml requests pillow || \
+          pip3 install --no-cache-dir openai pyyaml requests pillow
 
       - name: Install ROS dependencies via rosdep
         run: |
@@ -51,6 +51,11 @@ jobs:
       - name: Test
         run: |
           . /opt/ros/humble/setup.sh
+          # Upgrade pytest: the system pytest (6.x on Ubuntu 22.04) lacks the
+          # _pytest.scope module that the anyio plugin (pulled in by openai)
+          # requires, which crashes `colcon test`'s pytest run.
+          pip3 install -U --break-system-packages 'pytest>=7.4' || \
+          pip3 install -U 'pytest>=7.4'
           . install/setup.sh
           colcon test --packages-select nexus_brain nexus_perception nexus_orchestrator
           colcon test-result --verbose
