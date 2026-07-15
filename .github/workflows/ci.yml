@@ -17,60 +17,31 @@ jobs:
         with:
           path: src/ROS2-Nexus-Embodied-Assistant
 
-      - name: Setup ROS environment
+      - name: Install base tools
         run: |
-          # Ensure universe repository is enabled for ROS packages
+          # Enable the universe repository (some dependencies live there).
+          # Using sed instead of add-apt-repository avoids a chicken-and-egg
+          # failure when software-properties-common is not yet installed.
+          sed -i 's/^#\s*\(deb.*universe\)$/\1/' /etc/apt/sources.list
           apt-get update
-          apt-get install -y software-properties-common
-          add-apt-repository -y universe
-          apt-get update
-
-          # Core build tools
-          apt-get install -y \
+          apt-get install -y --no-install-recommends \
+            build-essential \
             python3-colcon-common-extensions \
             python3-rosdep \
-            python3-pip \
-            python3-vcstool \
-            build-essential
-
-          # ros2_control stack (note the correct package names)
-          apt-get install -y \
-            ros-humble-ros2-control \
-            ros-humble-ros2-controllers \
-            ros-humble-gazebo-ros2-control \
-            ros-humble-gazebo-ros-pkgs
-
-          # MoveIt2 and robot description tooling
-          apt-get install -y \
-            ros-humble-moveit \
-            ros-humble-moveit-ros-planning-interface \
-            ros-humble-xacro \
-            ros-humble-robot-state-publisher \
-            ros-humble-joint-state-publisher-gui
-
-          # Vision / sensor bridges
-          apt-get install -y \
-            ros-humble-image-transport \
-            ros-humble-cv-bridge
-
-          # Initialize rosdep if not already done
-          if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
-            rosdep init || true
-          fi
-          rosdep update
-
+            python3-pip
           . /opt/ros/humble/setup.sh
-
-      - name: Install package dependencies with rosdep
-        run: |
-          . /opt/ros/humble/setup.sh
-          cd src
-          rosdep install --from-paths . --ignore-src -r -y
 
       - name: Install Python deps
         run: |
-          pip3 install --break-system-packages openai pyyaml requests || \
-          pip3 install openai pyyaml requests
+          pip3 install --break-system-packages --no-cache-dir openai pyyaml requests || \
+          pip3 install --no-cache-dir openai pyyaml requests
+
+      - name: Install ROS dependencies via rosdep
+        run: |
+          . /opt/ros/humble/setup.sh
+          rosdep update
+          cd src
+          rosdep install --from-paths . --ignore-src -y -r
 
       - name: Build
         run: |
