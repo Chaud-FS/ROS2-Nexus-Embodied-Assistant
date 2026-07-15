@@ -71,6 +71,12 @@ jobs:
           pip3 install -U 'pytest>=7.4,<8' 'anyio<4' || \
           pip3 install -U --user 'pytest>=7.4,<8' 'anyio<4'
           python3 -m pytest --version
+          # Make the three ament_python packages importable from source. With
+          # --symlink-install colcon symlinks them into install/, but the
+          # generated site-packages entry is not reliably picked up here, so we
+          # add the source package roots explicitly. (install/setup.sh still
+          # provides nexus_interfaces, ROS msgs, etc.)
+          export PYTHONPATH="$PWD/src/ROS2-Nexus-Embodied-Assistant/src/nexus_brain:$PWD/src/ROS2-Nexus-Embodied-Assistant/src/nexus_perception:$PWD/src/ROS2-Nexus-Embodied-Assistant/src/nexus_orchestrator:$PYTHONPATH"
           # The repo is checked out to src/ROS2-Nexus-Embodied-Assistant
           # (see the checkout `path:`), so the ROS packages are nested one
           # level deeper than the workspace root.
