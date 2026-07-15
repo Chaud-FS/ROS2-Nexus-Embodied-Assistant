@@ -62,8 +62,14 @@ jobs:
           #  - pytest>=7.4 provides the `_pytest.scope` module anyio needs
           #  - anyio<4 does not touch `_pytest.scope` at all, so even if the
           #    system pytest is somehow used the run no longer crashes.
-          pip3 install -U --break-system-packages 'pytest>=7.4' 'anyio<4' || \
-          pip3 install -U 'pytest>=7.4' 'anyio<4'
+          # pytest must stay on 7.x: ROS's launch_testing plugin registers the
+          # old `pytest_pycollect_makemodule(path, parent)` hook, which was
+          # renamed to `file_path` in pytest 8+, so pytest>=8 crashes with a
+          # PluginValidationError. 7.x also provides the `_pytest.scope` module
+          # that anyio needs. anyio<4 is belt-and-suspenders (its plugin does
+          # not touch `_pytest.scope` at all).
+          pip3 install -U 'pytest>=7.4,<8' 'anyio<4' || \
+          pip3 install -U --user 'pytest>=7.4,<8' 'anyio<4'
           python3 -m pytest --version
           python3 -m pytest \
             src/nexus_brain/tests \
