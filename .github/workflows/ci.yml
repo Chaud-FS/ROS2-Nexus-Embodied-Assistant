@@ -71,8 +71,11 @@ jobs:
           pip3 install -U 'pytest>=7.4,<8' 'anyio<4' || \
           pip3 install -U --user 'pytest>=7.4,<8' 'anyio<4'
           python3 -m pytest --version
+          # The repo is checked out to src/ROS2-Nexus-Embodied-Assistant
+          # (see the checkout `path:`), so the ROS packages are nested one
+          # level deeper than the workspace root.
           python3 -m pytest \
-            src/nexus_brain/tests \
-            src/nexus_perception/tests \
-            src/nexus_orchestrator/tests \
+            src/ROS2-Nexus-Embodied-Assistant/src/nexus_brain/tests \
+            src/ROS2-Nexus-Embodied-Assistant/src/nexus_perception/tests \
+            src/ROS2-Nexus-Embodied-Assistant/src/nexus_orchestrator/tests \
             -v
